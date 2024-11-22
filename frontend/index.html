@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Blockchain Voting</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Developer Friendly Blockchain</h1>
+      <div class="voting-options">
+        <div class="blockchain" onclick="vote('Ethereum')">
+          <img src="ethereum.jpg" alt="Ethereum" />
+          <p>Ethereum</p>
+        </div>
+        <div class="blockchain" onclick="vote('Solana')">
+          <img src="Solana.jpg" alt="Solana" />
+          <p>Solana</p>
+        </div>
+      </div>
+      <button class="results-btn" onclick="fetchResults()">View Results</button>
+    </div>
+
+    <script>
+      function vote(blockchain) {
+        const payload = { blockchain };
+        console.log("Sending payload:", payload);
+        fetch("http://localhost:5000/vote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ blockchain }),
+        })
+          .then((response) => {
+            console.log(response);
+            if (!response.ok) {
+              return response.json();
+            }
+          })
+          .then((data) => {
+            console.log("successful");
+            if (data && data.message) {
+              // Assuming backend sends a JSON response like { message: 'Success' }
+              alert(data.message);
+            } else {
+              alert(`Successfully voted for ${blockchain}!`);
+            }
+          })
+          .catch((error) => console.log("Error:", error));
+      }
+
+      function fetchResults() {
+        fetch("http://localhost:5000/results")
+          .then((response) => {
+            return response.json(); // Ensure the JSON is returned as a promise
+          })
+          .then((data) => {
+            // Extract vote counts from the received string
+            const ethereumVotes = data.Ethereum.match(/\d+/)[0]; // Extracts the number from the string
+            const solanaVotes = data.Solana.match(/\d+/)[0]; // Extracts the number from the string
+
+            // Alert with the voting counts
+            alert(
+              `Ethereum Votes: ${ethereumVotes}, Solana Votes: ${solanaVotes}`
+            );
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>
