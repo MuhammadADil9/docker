@@ -13,15 +13,27 @@
         <div class="blockchain" onclick="vote('Ethereum')">
           <img src="ethereum.jpg" alt="Ethereum" />
           <p>Ethereum</p>
+          <ul>
+            <li>Widely adopted.</li>
+            <li>Large community.</li>
+            <li>Supports DeFi and NFTs.</li>
+            <li>EVM-compatible.</li>
+          </ul>
         </div>
         <div class="blockchain" onclick="vote('Solana')">
           <img src="Solana.jpg" alt="Solana" />
           <p>Solana</p>
+          <ul>
+            <li>Fast transactions.</li>
+            <li>Low fees.</li>
+            <li>Rust-based tools.</li>
+            <li>Growing ecosystem.</li>
+          </ul>
         </div>
       </div>
       <button class="results-btn" onclick="fetchResults()">View Results</button>
     </div>
-
+    
     <script>
       function vote(blockchain) {
         const payload = { blockchain };
